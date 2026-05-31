@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nothing But Shiny</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111214;
+    --card: #171a1e;
+    --border: #252830;
+    --blue: #2563eb;
+    --blue-bright: #3b82f6;
+    --blue-glow: rgba(37,99,235,0.18);
+    --white: #f4f6fa;
+    --muted: #8b91a0;
+    --accent: #60a5fa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 6vw;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--blue-bright); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 0.9rem;
+    font-weight: 500; letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--blue); color: var(--white);
+    border: none; padding: 10px 22px; border-radius: 6px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    font-weight: 600; cursor: pointer; letter-spacing: 0.3px;
+    transition: background 0.2s, transform 0.15s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--blue-bright); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 6vw 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 80% 50%, rgba(37,99,235,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(37,99,235,0.06) 0%, transparent 60%),
+      var(--black);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 660px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.3);
+    color: var(--accent); padding: 6px 14px; border-radius: 100px;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-badge::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--blue-bright);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    color: var(--white);
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1 .blue { color: var(--blue-bright); }
+  .hero-sub {
+    margin-top: 24px; font-size: 1.1rem;
+    color: var(--muted); line-height: 1.7; max-width: 480px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-actions {
+    margin-top: 40px; display: flex; gap: 14px; flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--blue); color: #fff;
+    padding: 14px 32px; border-radius: 8px;
+    font-size: 1rem; font-weight: 600; text-decoration: none;
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+    box-shadow: 0 0 32px rgba(37,99,235,0.35);
+  }
+  .btn-primary:hover {
+    background: var(--blue-bright); transform: translateY(-2px);
+    box-shadow: 0 0 48px rgba(37,99,235,0.5);
+  }
+  .btn-secondary {
+    background: transparent; color: var(--white);
+    padding: 14px 32px; border-radius: 8px;
+    font-size: 1rem; font-weight: 600; text-decoration: none;
+    border: 1px solid var(--border);
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-secondary:hover { border-color: var(--blue-bright); color: var(--blue-bright); }
+
+  .hero-photos {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 620px;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .hero-photo {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    aspect-ratio: 3/2;
+    position: relative;
+  }
+  .hero-photo img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s ease;
+    display: block;
+  }
+  .hero-photo:hover img { transform: scale(1.07); }
+  .hero-photo-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.78));
+    color: #fff; font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.4px; padding: 18px 6px 7px;
+    text-align: center;
+  }
+
+  /* SECTIONS */
+  section { padding: 100px 6vw; }
+
+  .section-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--blue-bright);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    letter-spacing: 1.5px; line-height: 1.05;
+    color: var(--white);
+  }
+  .section-desc {
+    margin-top: 14px; color: var(--muted);
+    font-size: 1rem; line-height: 1.7; max-width: 500px;
+  }
+
+  /* SERVICES */
+  .services { background: var(--dark); }
+  .services-header { margin-bottom: 56px; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .service-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 36px 32px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--blue-bright));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .service-card:hover {
+    border-color: rgba(37,99,235,0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px var(--blue-glow);
+  }
+  .service-card:hover::before { opacity: 1; }
+  .service-icon {
+    font-size: 2.4rem; margin-bottom: 20px;
+    display: block;
+  }
+  .service-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 1px;
+    color: var(--white); margin-bottom: 10px;
+  }
+  .service-desc {
+    color: var(--muted); font-size: 0.9rem; line-height: 1.6;
+  }
+
+  /* PRICING */
+  .pricing-header { margin-bottom: 56px; }
+  .pricing-tabs {
+    display: flex; gap: 10px; margin-bottom: 40px; flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 10px 24px; border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--muted);
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px;
+  }
+  .tab-btn.active {
+    background: var(--blue); color: #fff; border-color: var(--blue);
+    box-shadow: 0 0 20px rgba(37,99,235,0.3);
+  }
+  .tab-btn:hover:not(.active) { border-color: var(--blue-bright); color: var(--white); }
+
+  .pricing-panel { display: none; }
+  .pricing-panel.active { display: grid; gap: 20px; }
+
+  /* Car pricing */
+  .car-pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .price-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 36px 28px;
+    transition: all 0.3s; position: relative; overflow: hidden;
+    text-align: center;
+  }
+  .price-card.featured {
+    border-color: var(--blue);
+    background: linear-gradient(160deg, rgba(37,99,235,0.12) 0%, var(--card) 60%);
+    box-shadow: 0 0 60px var(--blue-glow);
+  }
+  .price-card:hover:not(.featured) {
+    border-color: rgba(37,99,235,0.4); transform: translateY(-4px);
+  }
+  .price-card.featured:hover { transform: translateY(-4px); }
+  .featured-badge {
+    position: absolute; top: 16px; right: 16px;
+    background: var(--blue); color: #fff;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 4px;
+  }
+  .price-label {
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+  }
+  .price-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.8rem; color: var(--white); letter-spacing: 1px; line-height: 1;
+  }
+  .price-amount sup {
+    font-family: 'DM Sans', sans-serif; font-size: 1.4rem; vertical-align: super;
+    line-height: 1;
+  }
+  .price-divider {
+    width: 40px; height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--blue-bright));
+    margin: 18px auto;
+  }
+  .price-features {
+    list-style: none; text-align: left; margin-top: 20px;
+  }
+  .price-features li {
+    color: var(--muted); font-size: 0.88rem; padding: 6px 0;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .price-features li::before {
+    content: '✓'; color: var(--blue-bright); font-weight: 700; flex-shrink: 0;
+  }
+  .price-cta {
+    display: block; margin-top: 28px; padding: 12px 20px;
+    border-radius: 8px; font-weight: 600; font-size: 0.9rem;
+    text-align: center; text-decoration: none; transition: all 0.2s;
+  }
+  .price-cta-primary {
+    background: var(--blue); color: #fff;
+    box-shadow: 0 0 24px rgba(37,99,235,0.35);
+  }
+  .price-cta-primary:hover { background: var(--blue-bright); transform: translateY(-1px); }
+  .price-cta-secondary {
+    background: transparent; color: var(--white);
+    border: 1px solid var(--border);
+  }
+  .price-cta-secondary:hover { border-color: var(--blue-bright); color: var(--blue-bright); }
+
+  /* Garbage can panel */
+  .garbage-pricing {
+    display: flex; align-items: center; gap: 40px; flex-wrap: wrap;
+  }
+  .garbage-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 48px 44px;
+    display: flex; align-items: center; gap: 36px;
+    flex: 1; min-width: 280px;
+  }
+  .garbage-icon { font-size: 4rem; }
+  .garbage-info {}
+  .garbage-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 1px; color: var(--white);
+  }
+  .garbage-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.2rem; color: var(--blue-bright); letter-spacing: 1px;
+    line-height: 1; margin: 6px 0;
+  }
+  .garbage-note { color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+  .garbage-extras {
+    flex: 1; min-width: 240px;
+    background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.2);
+    border-radius: 14px; padding: 32px;
+  }
+  .garbage-extras-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem; color: var(--white); letter-spacing: 1px; margin-bottom: 16px;
+  }
+  .extra-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .extra-item:last-child { border-bottom: none; }
+  .extra-item-name { color: var(--muted); }
+  .extra-item-price { color: var(--white); font-weight: 600; }
+
+  /* WHY US */
+  .why { background: var(--dark); }
+  .why-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px; margin-top: 56px;
+  }
+  .why-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 32px 26px;
+  }
+  .why-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem; color: var(--blue-bright); letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+  .why-title {
+    font-weight: 600; font-size: 1rem; color: var(--white); margin-bottom: 10px;
+  }
+  .why-text { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+
+  /* CONTACT */
+  .contact { text-align: center; }
+  .contact-inner {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 72px 40px; max-width: 700px; margin: 0 auto;
+    position: relative; overflow: hidden;
+  }
+  .contact-inner::before {
+    content: '';
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 200px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  }
+  .contact-inner .section-title { margin-bottom: 16px; }
+  .contact-inner .section-desc { margin: 0 auto 40px; text-align: center; }
+  .contact-options {
+    display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  }
+  .contact-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 28px; border-radius: 8px;
+    font-weight: 600; font-size: 0.95rem; text-decoration: none;
+    transition: all 0.2s;
+  }
+  .contact-btn-primary {
+    background: var(--blue); color: #fff;
+    box-shadow: 0 0 28px rgba(37,99,235,0.35);
+  }
+  .contact-btn-primary:hover { background: var(--blue-bright); transform: translateY(-2px); }
+  .contact-btn-outline {
+    background: transparent; color: var(--white);
+    border: 1px solid var(--border);
+  }
+  .contact-btn-outline:hover { border-color: var(--blue-bright); color: var(--blue-bright); }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark); border-top: 1px solid var(--border);
+    padding: 36px 6vw;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; letter-spacing: 2px; color: var(--white);
+  }
+  .footer-logo span { color: var(--blue-bright); }
+  .footer-copy { color: var(--muted); font-size: 0.82rem; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 14px 5vw; }
+    .nav-links { display: none; }
+    section { padding: 72px 5vw; }
+    .hero { padding: 100px 5vw 60px; }
+    .hero-stats { gap: 24px; flex-wrap: wrap; }
+    .garbage-pricing { flex-direction: column; }
+    .contact-inner { padding: 48px 24px; }
+    .hero-photos { max-width: 100%; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+    footer { justify-content: center; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Nothing But <span>Shiny</span></div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Book Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Now Booking in Your Area</div>
+    <h1>YOUR VEHICLE,<br><span class="blue">SHOWROOM</span><br>CLEAN.</h1>
+    <p class="hero-sub">Professional car detailing and garbage can cleaning services. We come to you — spotless results, every time.</p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-primary">See Pricing →</a>
+      <a href="#contact" class="btn-secondary">Book a Clean</a>
+    </div>
+    <div class="hero-photos">
+      <div class="hero-photo">
+        <img src="https://3dproducts.com/cdn/shop/collections/exteriorbannertest.jpg?v=1715803617" alt="Car exterior detail">
+        <div class="hero-photo-label">Exterior Detail</div>
+      </div>
+      <div class="hero-photo">
+        <img src="https://farm8.staticflickr.com/7320/10351797814_7d69eb219f_b.jpg" alt="Car detailing">
+        <div class="hero-photo-label">Car Polish</div>
+      </div>
+      <div class="hero-photo">
+        <img src="https://clemx.in/images/packages/car-detailing/car-wash.jpg" alt="Car wash">
+        <div class="hero-photo-label">Car Wash</div>
+      </div>
+      <div class="hero-photo">
+        <img src="https://tse1.mm.bing.net/th/id/OIP.PvUwr3mrMW7-PyuQHPCCbAHaHa?r=0&cb=thfvnextfalcon&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Clean car">
+        <div class="hero-photo-label">Full Detail</div>
+      </div>
+      <div class="hero-photo">
+        <img src="https://static.wixstatic.com/media/a5ceb5_4bae6c2bb97040afa520b146af55afd3~mv2.jpg/v1/fill/w_1000,h_629,al_c,q_85,usm_0.66_1.00_0.01/a5ceb5_4bae6c2bb97040afa520b146af55afd3~mv2.jpg" alt="Garbage can cleaning">
+        <div class="hero-photo-label">Bin Cleaning</div>
+      </div>
+      <div class="hero-photo">
+        <img src="https://citruscans.com/wp-content/uploads/2019/10/IMG_9004-e1572444569375.png" alt="Clean garbage cans">
+        <div class="hero-photo-label">Bin Cleaning</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services fade-up" id="services">
+  <div class="services-header">
+    <div class="section-label">What We Do</div>
+    <div class="section-title">COMPLETE CLEANING<br>SOLUTIONS</div>
+    <p class="section-desc">From bumper-to-bumper car detailing to fresh, sanitized garbage cans — we handle it all with professional-grade equipment.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">🚗</span>
+      <div class="service-name">Exterior Detail</div>
+      <p class="service-desc">Full exterior wash, wheel clean, tire dressing, and window treatment. Your car will shine like it just left the dealership.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🪑</span>
+      <div class="service-name">Interior Detail</div>
+      <p class="service-desc">Deep vacuum, surface wipe-down, dashboard treatment, window cleaning, and odor elimination — inside out freshness.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">✨</span>
+      <div class="service-name">Full Detail (Both)</div>
+      <p class="service-desc">The complete package — inside and out. Maximum value, maximum results. Best deal for a truly pristine vehicle.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🗑️</span>
+      <div class="service-name">Garbage Can Cleaning</div>
+      <p class="service-desc">High-pressure wash and sanitize of residential garbage cans. Kills bacteria, eliminates odors, and leaves cans fresh and clean.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="fade-up">
+  <div class="pricing-header">
+    <div class="section-label">Transparent Pricing</div>
+    <div class="section-title">SIMPLE, HONEST<br>RATES</div>
+    <p class="section-desc">No hidden fees. No surprises. Just great cleaning at fair prices.</p>
+  </div>
+
+  <div class="pricing-tabs">
+    <button class="tab-btn active" onclick="switchTab('cars', this)">🚗 Car Detailing</button>
+    <button class="tab-btn" onclick="switchTab('cans', this)">🗑️ Garbage Cans</button>
+  </div>
+
+  <!-- Cars Panel -->
+  <div class="pricing-panel active" id="tab-cars">
+    <div class="car-pricing-grid">
+
+      <div class="price-card">
+        <div class="price-label">Exterior Only</div>
+        <div class="price-amount"><sup>$</sup>60</div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li>Full exterior hand wash</li>
+          <li>Wheel & rim cleaning</li>
+          <li>Tire dressing</li>
+          <li>Exterior window clean</li>
+          <li>Door jamb wipe-down</li>
+        </ul>
+        <a href="#contact" class="price-cta price-cta-secondary">Book Exterior</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-label">Interior Only</div>
+        <div class="price-amount"><sup>$</sup>70</div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li>Full interior vacuum</li>
+          <li>Dashboard & console wipe</li>
+          <li>Interior window clean</li>
+          <li>Cup holder & vent clean</li>
+          <li>Odor treatment</li>
+        </ul>
+        <a href="#contact" class="price-cta price-cta-secondary">Book Interior</a>
+      </div>
+
+      <div class="price-card featured">
+        <div class="featured-badge">Best Value</div>
+        <div class="price-label">Full Detail — Both</div>
+        <div class="price-amount"><sup>$</sup>125</div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li>Everything in Exterior</li>
+          <li>Everything in Interior</li>
+          <li>Save $5 vs. booking separate</li>
+          <li>Top-to-bottom clean</li>
+          <li>Priority scheduling</li>
+        </ul>
+        <a href="#contact" class="price-cta price-cta-primary">Book Full Detail</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Garbage Cans Panel -->
+  <div class="pricing-panel" id="tab-cans">
+    <div class="garbage-pricing">
+      <div class="garbage-card">
+        <div class="garbage-icon">🗑️</div>
+        <div class="garbage-info">
+          <div class="garbage-name">Per Garbage Can</div>
+          <div class="garbage-price">$10</div>
+          <p class="garbage-note">Professional high-pressure wash and full sanitization per bin. Discounts available for multiple cans.</p>
+          <a href="#contact" class="price-cta price-cta-primary" style="margin-top:20px; display:inline-block; padding:12px 24px;">Book Cleaning</a>
+        </div>
+      </div>
+      <div class="garbage-extras">
+        <div class="garbage-extras-title">VOLUME SAVINGS</div>
+        <div class="extra-item">
+          <span class="extra-item-name">1 Garbage Can</span>
+          <span class="extra-item-price">$10</span>
+        </div>
+        <div class="extra-item">
+          <span class="extra-item-name">2 Garbage Cans</span>
+          <span class="extra-item-price">$20</span>
+        </div>
+        <div class="extra-item">
+          <span class="extra-item-name">3 Garbage Cans</span>
+          <span class="extra-item-price">$30</span>
+        </div>
+        <div class="extra-item">
+          <span class="extra-item-name">4+ Cans</span>
+          <span class="extra-item-price">Ask Us!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why fade-up" id="why">
+  <div class="section-label">Why Choose Us</div>
+  <div class="section-title">BUILT ON QUALITY<br>& TRUST</div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-num">01</div>
+      <div class="why-title">We Come To You</div>
+      <p class="why-text">No need to drive anywhere. We bring professional equipment right to your driveway — convenient and hassle-free.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">02</div>
+      <div class="why-title">Pro-Grade Equipment</div>
+      <p class="why-text">We use high-pressure washers, professional cleaning agents, and detailing tools to deliver results that last.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">03</div>
+      <div class="why-title">100% Satisfaction</div>
+      <p class="why-text">Not happy? We'll make it right. We stand behind every clean we do — no questions asked.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">04</div>
+      <div class="why-title">Eco-Friendly Products</div>
+      <p class="why-text">Our cleaning products are safe for your family, pets, and the environment — powerful clean, responsible choice.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="fade-up">
+  <div class="contact-inner">
+    <div class="section-label">Get In Touch</div>
+    <div class="section-title">READY FOR A<br>SPOTLESS CLEAN?</div>
+    <p class="section-desc">Reach out to book your appointment. We'll get back to you quickly to confirm your time slot.</p>
+    <div class="contact-options">
+      <a href="mailto:mohamadnoursharbaji8@gmail.com" class="contact-btn contact-btn-primary">✉️ Email Us</a>
+    </div>
+    <p style="margin-top: 28px; color: var(--muted); font-size: 0.85rem;">mohamadnoursharbaji8@gmail.com</p>
+    <p style="margin-top: 10px; color: var(--muted); font-size: 0.82rem;">📍 Saint John, New Brunswick &nbsp;·&nbsp; We'll respond within 24 hours.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Nothing But <span>Shiny</span></div>
+  <div class="footer-copy">📍 Saint John, New Brunswick &nbsp;·&nbsp; © 2026 Nothing But Shiny. All rights reserved.</div>
+</footer>
+
+<script>
+  // Tab switching
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.pricing-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+  }
+
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
